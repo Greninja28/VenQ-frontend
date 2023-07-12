@@ -1,5 +1,5 @@
 import axios from "axios";
-const URL = "http://localhost:4000"
+const URL = "https://venq-api.onrender.com"
 
 export const signup = (name, email, password) => async (dispatch) => {
   try {
