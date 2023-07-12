@@ -1,0 +1,57 @@
+.LinkContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
+}
+
+.loginButton {
+  border: 2px solid #0170dc;
+  border-radius: 8px;
+  color: #0170dc;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  text-transform: none;
+  margin-left: -10px;
+  background-color: white;
+  padding: 13px 18px;
+  cursor: pointer;
+}
+.loginButton a {
+  text-decoration: none;
+  color: #0170dc;
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+}
+.loginButton:hover {
+  background-color: white;
+}
+.SignupButton:hover {
+  background-color: #0170dc;
+}
+
+.SignupButton {
+  border: 2px solid #0170dc;
+  border-radius: 8px;
+  background-color: #0170dc;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  text-transform: none;
+  margin: 10px;
+  padding: 13px 25px;
+  cursor: pointer;
+}
+.SignupButton a {
+  text-decoration: none;
+  color: #fff;
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 25px;
+}

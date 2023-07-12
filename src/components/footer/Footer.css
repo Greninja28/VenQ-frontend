@@ -1,0 +1,9 @@
+.footerLogo {
+  margin-bottom: 20%;
+}
+.socialIcons {
+  display: flex;
+  /* border: 2px solid blue; */
+  justify-content: space-around;
+  margin-bottom: 90%;
+}
