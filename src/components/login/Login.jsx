@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './Login.css'
 import { Box, Divider, Typography, styled } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../redux/actions/user';
 
 
 const Back = styled(Box)`
@@ -14,7 +16,6 @@ const Back = styled(Box)`
   position: relative;
   overflow: hidden;
 `
-
 const LoginCard = styled(Box)`
   margin-top: -6%; 
   width: 40%;
@@ -24,7 +25,6 @@ const LoginCard = styled(Box)`
   background-color: white;
   border-radius: 10px;
 `
-
 const LowerPart = styled(Box)`
   width: 100%;
   text-align: center;
@@ -39,7 +39,6 @@ const LowerPart = styled(Box)`
   align-items: center;
   flex-direction: column;
 `
-
 const Line = styled(Divider)`
   background-color: #121c30;
   width: 105%;
@@ -49,7 +48,6 @@ const Line = styled(Divider)`
   top: 50%;
   left: 0%;
 `
-
 const SubText = styled(Typography)`
   font-size: 22px;
   font-weight: 500;
@@ -57,7 +55,6 @@ const SubText = styled(Typography)`
   font-family: "Bebes Neue";
   font-style: normal;
 `
-
 const SmallText = styled(Typography)`
   font-size: 16px;
   font-weight: 500;
@@ -66,13 +63,11 @@ const SmallText = styled(Typography)`
   font-style: normal;
   padding: 10px;
 `
-
 const Forgotpassword = styled(Typography)`
   font-size: 22px;
   color: #0170dc;
   padding: 10px;
 `
-
 const Terms = styled(Typography)`
   font-size: 13px;
   color: #bbb3bc;
@@ -91,7 +86,8 @@ const Login = () => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
+  const dispatch = useDispatch()
+  const { loginMessage, userToken, error } = useSelector((state) => state.auth)
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -104,10 +100,33 @@ const Login = () => {
     } else if (password.length < 6) {
       toast.error("Enter correct password!!")
     } else {
-      toast.success("Login successful!!!")
-      navigate('/profile')
+      dispatch(login(email, password))
     }
   }
+
+  useEffect(() => {
+    const cleanupToast = () => {
+      toast.dismiss(); // Clear all toasts when component unmounts
+    };
+
+    if (error) {
+      toast.error('Please enter registered email or password');
+      setEmail('');
+      setPassword('');
+      setTimeout(() => {
+        navigate('/login')
+      }, 5000)
+      return cleanupToast; // Cleanup function
+    } else if (loginMessage) {
+      toast.success('Login Successful');
+      localStorage.setItem('details', userToken);
+      setTimeout(() => {
+        navigate('/dashboard/properties')
+      }, 5000)
+      return cleanupToast; // Cleanup function
+    }
+
+  }, [error, loginMessage, navigate, userToken]);
 
   return (
     <div>

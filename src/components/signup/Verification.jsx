@@ -56,25 +56,34 @@ const Verification = ({ step }) => {
   };
 
   useEffect(() => {
+    const cleanupToast = () => {
+      toast.dismiss(); // Clear all toasts when component unmounts
+    };
+
     if (error) {
       toast.error(error);
       setOtp('')
       setTimeout(() => {
         navigate('/verify')
       }, 5000)
+      return cleanupToast; // Cleanup function
     } else if (message) {
       toast.success("User registered successfully!!");
       setOtp('')
       setTimeout(() => {
         navigate('/dashboard/properties');
       }, 5000)
+      return cleanupToast; // Cleanup function
     }
+
   }, [error, message, navigate]);
 
   useEffect(() => {
     const interval = setInterval(countdown, 1000);
     return () => clearInterval(interval);
   });
+
+
 
 
   return (

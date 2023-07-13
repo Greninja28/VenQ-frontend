@@ -9,7 +9,6 @@ import Tier from './rewards/Tier';
 import Referrals from './rewards/Referrals';
 import Cart from './cart/Cart';
 import Wallet from './contents/Wallet';
-
 import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import InsightsIcon from '@mui/icons-material/Insights';
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
@@ -20,13 +19,15 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import BookmarkBorderOutlinedIcon from '@mui/icons-material/BookmarkBorderOutlined';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-
 import { Box, Divider, List, Toolbar, Typography } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import PropertyItem from './property/PropertyItem';
 import Photos from './property/Photos';
+import jwtDecode from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/actions/user';
 
 const drawerWidth = 280;
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -179,33 +180,38 @@ const Dashboard = () => {
   const [clicked, setClicked] = useState(false)
   const [nestedListVisible, setNestedListVisible] = useState(false);
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const token = localStorage.getItem('details');
+  const decodedToken = jwtDecode(token);
+  const name = decodedToken.UserInfo.name;
 
   const handleAccountClick = () => {
     setNestedListVisible(!nestedListVisible);
-  };
-
+  }
   const handleStepChange = (newStep) => {
     setStep(newStep)
     setNestedListVisible(false)
   }
-
   const handleBuyProperties = () => {
     setStep(1); // Set the step to 1 when "Buy Properties" is clicked
     setNestedListVisible(false);
     navigate('/dashboard/properties'); // Navigate to the Properties component
-  };
-
+  }
   const handleBalance = () => {
     setStep(2); // Set the step to 1 when "Buy Properties" is clicked
     setNestedListVisible(false);
     navigate('/dashboard/wallet'); // Navigate to the Properties component
-  };
-
+  }
   const handleCart = () => {
     setStep(5); // Set the step to 1 when "Buy Properties" is clicked
     setNestedListVisible(false);
     navigate('/dashboard/cart'); // Navigate to the Properties component
-  };
+  }
+  const handleLogOut = () => {
+    localStorage.removeItem('details');
+    dispatch(logout(token))
+    navigate('/')
+  }
 
 
   return (
@@ -263,8 +269,8 @@ const Dashboard = () => {
 
             <Options onClick={handleAccountClick} style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div className="account-container">
-                <div className="circle">SA</div>
-                <Heading style={{ fontSize: '16px' }}>Account</Heading>
+                <div className="circle">{name.slice(0, 2).toUpperCase()}</div>
+                <Heading style={{ fontSize: '16px' }}>{name}</Heading>
               </div>
               <ChevronRightIcon />
             </Options>
@@ -296,7 +302,7 @@ const Dashboard = () => {
 
             <Divider sx={{ my: 1 }} style={{ height: '2px', width: '100%' }} />
 
-            <Logout>
+            <Logout to='/' onClick={handleLogOut}>
               <LogoutIcon />
               <SubHeading>Logout</SubHeading>
             </Logout>

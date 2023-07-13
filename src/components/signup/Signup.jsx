@@ -20,6 +20,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const { userDetails, error, userToken } = useSelector((state) => state.auth);
+  console.log(userToken)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,6 +41,10 @@ const Signup = () => {
 
 
   useEffect(() => {
+    const cleanupToast = () => {
+      toast.dismiss(); // Clear all toasts when component unmounts
+    };
+
     if (error) {
       toast.error('User already exists in the database');
       setName('');
@@ -48,13 +53,16 @@ const Signup = () => {
       setTimeout(() => {
         navigate('/signup')
       }, 5000)
+      return cleanupToast; // Cleanup function
     } else if (userDetails) {
       toast.success('Verification code sent to the email entered!!!');
       localStorage.setItem('details', userToken);
       setTimeout(() => {
         setStep(2)
       }, 5000)
+      return cleanupToast; // Cleanup function
     }
+
   }, [error, userDetails, navigate, userToken]);
 
   return (

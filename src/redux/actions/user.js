@@ -1,5 +1,6 @@
 import axios from "axios";
 const URL = "https://venq-api.onrender.com"
+// const URL = "http://localhost:4000"
 
 export const signup = (name, email, password) => async (dispatch) => {
   try {
@@ -26,7 +27,7 @@ export const signup = (name, email, password) => async (dispatch) => {
       payload: error.response.data.message
     });
   }
-};
+}
 
 
 export const verifyEmail = (email, otp) => async (dispatch) => {
@@ -45,12 +46,78 @@ export const verifyEmail = (email, otp) => async (dispatch) => {
 
     dispatch({
       type: "VERIFY_SUCCESS",
-      payload: data.message
+      payload: {
+        message: data.message,
+        details: data.details
+      }
+
     })
 
   } catch (error) {
     dispatch({
       type: 'VERIFY_FAILURE',
+      payload: error.response.data
+    })
+  }
+}
+
+
+export const login = (email, password) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "LOGIN_REQUEST"
+    })
+
+    const { data } = await axios.post(`${URL}/auth/user/login`, {
+      email, password
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    dispatch({
+      type: "LOGIN_SUCCESS",
+      payload: {
+        message: data.message,
+        token: data.token
+      }
+    })
+
+  } catch (error) {
+    dispatch({
+      type: 'LOGIN_FAILURE',
+      payload: error.response.data
+    })
+  }
+}
+
+
+export const logout = (token) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "LOGOUT_REQUEST"
+    })
+
+    const { data } = await axios.post(`${URL}/auth/user/signout`, {
+      token
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    dispatch({
+      type: "LOGOUT_SUCCESS",
+      payload: {
+        message: data.message,
+        user: data.user
+      }
+    })
+
+  } catch (error) {
+    dispatch({
+      type: 'LOGOUT_FAILURE',
       payload: error.response.data
     })
   }
