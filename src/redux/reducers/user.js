@@ -12,11 +12,13 @@ export const authReducer = createReducer(initialState, {
     state.loading = false;
     state.userDetails = action.payload.message;
     state.userToken = action.payload.token;
+    state.message = null;
     state.error = null;
   },
   SIGNUP_FAILURE: (state, action) => {
     state.loading = false;
     state.userDetails = null;
+    state.message = null;
     state.userToken = null; // Reset the token in case of failure
     state.error = action.payload;
   },
@@ -63,12 +65,33 @@ export const authReducer = createReducer(initialState, {
     state.loading = false
     state.logoutMessage = action.payload.message
     state.user = action.payload.user
+    state.userToken = null
+    state.userDetails = null
+    state.loginMessage = null
     state.error = null
   },
   LOGOUT_FAILURE: (state, action) => {
     state.loading = false
     state.logoutMessage = null
     state.user = null
+    state.userToken = null
+    state.loginMessage = null
+    state.userDetails = null
+    state.error = action.payload
+  },
+
+
+  OTP_RESEND_REQUEST: (state) => {
+    state.loading = true
+  },
+  OTP_RESEND_SUCCESS: (state, action) => {
+    state.loading = false
+    state.otpMessage = action.payload
+    state.error = null
+  },
+  OTP_RESEND_FAILURE: (state, action) => {
+    state.loading = false
+    state.otpMessage = null
     state.error = action.payload
   },
 

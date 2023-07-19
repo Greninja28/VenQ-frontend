@@ -22,7 +22,6 @@ const Heading = styled(Typography)`
 `
 
 const SubHeading = styled(Typography)`
-  font-family: 'Gilroy';
   font-style: normal;
   font-weight: 500;
   font-size: 22px;

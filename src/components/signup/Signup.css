@@ -191,7 +191,7 @@
   border: 2px solid #0170dc;
 }
 
-.verification-container form button {
+.verification-container form .verify-button {
   padding: 10px;
   background-color: #0170dc;
   border-radius: 10px;
@@ -202,4 +202,6 @@
   font-family: "Inter";
   letter-spacing: 2px;
   font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
 }

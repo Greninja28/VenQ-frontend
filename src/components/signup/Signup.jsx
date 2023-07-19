@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './Signup.css'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../../redux/actions/user';
@@ -20,7 +20,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const { userDetails, error, userToken } = useSelector((state) => state.auth);
-  console.log(userToken)
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,32 +37,22 @@ const Signup = () => {
     } else {
       dispatch(signup(name, email, password));
     }
-  };
-
+  }
 
   useEffect(() => {
-    const cleanupToast = () => {
-      toast.dismiss(); // Clear all toasts when component unmounts
-    };
-
     if (error) {
       toast.error('User already exists in the database');
       setName('');
       setEmail('');
       setPassword('');
-      setTimeout(() => {
-        navigate('/signup')
-      }, 5000)
-      return cleanupToast; // Cleanup function
+      navigate('/signup');
+      toast.dismiss(); // Clear all toasts when component unmounts
     } else if (userDetails) {
-      toast.success('Verification code sent to the email entered!!!');
       localStorage.setItem('details', userToken);
-      setTimeout(() => {
-        setStep(2)
-      }, 5000)
-      return cleanupToast; // Cleanup function
+      navigate('verify');
+      setStep(2);
+      toast.dismiss(); // Clear all toasts when component unmounts
     }
-
   }, [error, userDetails, navigate, userToken]);
 
   return (
@@ -108,7 +98,7 @@ const Signup = () => {
             </div>
 
             <div className="signup-image">
-              <img src="images/VENQ_BOLD_Big.png" alt="logo" />
+              <img src="/images/VENQ_BOLD_Big.png" alt="logo" />
               <div className="text">
                 <Typography variant='h2'>Say hello</Typography>
                 <Typography variant='h2'>to passive income</Typography>
@@ -117,11 +107,12 @@ const Signup = () => {
           </>
         }
 
-
-
-
         <ToastContainer />
-        {step === 2 && <Verification step={step} />}
+        {step === 2 &&
+          <Routes>
+            <Route path="verify" element={<Verification step={step} setStep={setStep} />} />
+          </Routes>
+        }
       </div>
 
 

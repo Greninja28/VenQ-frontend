@@ -25,7 +25,6 @@ const Heading = styled(Typography)`
 `
 
 const SubHeading = styled(Typography)`
-  font-family: Gilroy;
   font-size: 20px;
   font-weight: 500;
   line-height: 26px;

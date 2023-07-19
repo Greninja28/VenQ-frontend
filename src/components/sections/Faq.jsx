@@ -5,13 +5,10 @@ import './Sections.css'
 const MainContainer = styled(Box)`
   display: flex;
   margin-top: 10%;
-  // border: 2px solid Blue;
   height: 70vh;
-
 `
 
 const TextContainer = styled(Box)`
-  // border: 2px solid black;
   display: flex;
   flex-direction: column;
   justify-content: center;  
@@ -20,13 +17,11 @@ const TextContainer = styled(Box)`
 `
 
 const FaqSection = styled(Box)`
-  // border: 2px solid green;
   padding: 20px;
   flex: 6;
 `
 
 const Question = styled(Box)`
-  // border: 2px solid green;
   position: relative;
   height: 40vh;
   background-color: #F6F7F9;
@@ -56,7 +51,6 @@ const SimpleQuestion = styled(Typography)`
 `
 
 const SubHeading = styled(Typography)`
-  font-family: 'Gilroy';
   font-style: normal;
   font-weight: 500;
   font-size: 22px;

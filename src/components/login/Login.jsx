@@ -105,25 +105,17 @@ const Login = () => {
   }
 
   useEffect(() => {
-    const cleanupToast = () => {
-      toast.dismiss(); // Clear all toasts when component unmounts
-    };
 
     if (error) {
       toast.error('Please enter registered email or password');
       setEmail('');
       setPassword('');
-      setTimeout(() => {
-        navigate('/login')
-      }, 5000)
-      return cleanupToast; // Cleanup function
+      navigate('/login')
+      toast.dismiss(); // Clear all toasts when component unmounts
     } else if (loginMessage) {
-      toast.success('Login Successful');
       localStorage.setItem('details', userToken);
-      setTimeout(() => {
-        navigate('/dashboard/properties')
-      }, 5000)
-      return cleanupToast; // Cleanup function
+      navigate('/dashboard/properties')
+      toast.dismiss(); // Clear all toasts when component unmounts
     }
 
   }, [error, loginMessage, navigate, userToken]);
@@ -154,7 +146,7 @@ const Login = () => {
 
           <div className="terms">
             <Forgotpassword>Forgot Password</Forgotpassword>
-            <Terms>By clicking Log In you agree to VenQ's <Link to="/welcome">Terms & Conditions</Link>  and <Link to="/welcome">Key Risks</Link> </Terms>
+            <Terms>By clicking Log In you agree to VenQ's <Link to="/">Terms & Conditions</Link>  and <Link to="/">Key Risks</Link> </Terms>
           </div>
 
         </LoginCard>

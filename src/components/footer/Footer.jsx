@@ -7,43 +7,36 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const MainContainer = styled(Box)`
-  // border: 2px solid black;
   background-color: #F6F7F9;
   display: flex;
   height: 100vh;
 `
 
 const LeftContainer = styled(Box)`
-  // border: 2px solid red;
   padding: 9%;
   display: flex;
   flex-direction: column;
 `
 
 const RightContainer = styled(Box)`
-  // border: 2px solid green;
   color: black;
   padding: 9% 40px;
   
 `
 
 const Investors = styled(Box)`
-  // border: 2px solid yellow;
   color: black;
 `
 
 const Startup = styled(Box)`
-  // border: 2px solid orange;
   color: black;
 `
 
 const Company = styled(Box)`
-  // border: 2px solid red;
   color: black;
 `
 
 const GridContainer = styled(Grid)`
-  // border: 2px solid black;
   justify-content: end;
 `
 

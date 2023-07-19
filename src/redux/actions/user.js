@@ -122,3 +122,34 @@ export const logout = (token) => async (dispatch) => {
     })
   }
 }
+
+
+export const resendOTP = (email) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "OTP_RESEND_REQUEST"
+    })
+
+    const { data } = await axios.post(`${URL}/auth/user/resendOTP`, {
+      email
+    }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+
+    dispatch({
+      type: "OTP_RESEND_SUCCESS",
+      payload: data.message
+
+    })
+
+  } catch (error) {
+    dispatch({
+      type: 'OTP_RESEND_FAILURE',
+      payload: error.response.data
+    })
+  }
+}
+
+
