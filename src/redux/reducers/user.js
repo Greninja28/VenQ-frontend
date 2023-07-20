@@ -13,14 +13,14 @@ export const authReducer = createReducer(initialState, {
     state.userDetails = action.payload.message;
     state.userToken = action.payload.token;
     state.message = null;
-    state.error = null;
+    state.signupError = null;
   },
   SIGNUP_FAILURE: (state, action) => {
     state.loading = false;
     state.userDetails = null;
     state.message = null;
     state.userToken = null; // Reset the token in case of failure
-    state.error = action.payload;
+    state.signupError = action.payload;
   },
 
 
@@ -31,13 +31,13 @@ export const authReducer = createReducer(initialState, {
     state.loading = false
     state.message = action.payload.message
     state.userDetails = action.payload.details
-    state.error = null
+    state.verifyError = null
   },
   VERIFY_FAILURE: (state, action) => {
     state.loading = false
     state.message = null
     state.userDetails = null
-    state.error = action.payload
+    state.verifyError = action.payload
   },
 
 
@@ -48,13 +48,13 @@ export const authReducer = createReducer(initialState, {
     state.loading = false
     state.loginMessage = action.payload.message
     state.userToken = action.payload.token
-    state.error = null
+    state.loginError = null
   },
   LOGIN_FAILURE: (state, action) => {
     state.loading = false
     state.loginMessage = null
     state.userToken = null
-    state.error = action.payload
+    state.loginError = action.payload
   },
 
 
@@ -68,7 +68,7 @@ export const authReducer = createReducer(initialState, {
     state.userToken = null
     state.userDetails = null
     state.loginMessage = null
-    state.error = null
+    state.logoutError = null
   },
   LOGOUT_FAILURE: (state, action) => {
     state.loading = false
@@ -77,7 +77,7 @@ export const authReducer = createReducer(initialState, {
     state.userToken = null
     state.loginMessage = null
     state.userDetails = null
-    state.error = action.payload
+    state.logoutError = action.payload
   },
 
 
@@ -87,12 +87,12 @@ export const authReducer = createReducer(initialState, {
   OTP_RESEND_SUCCESS: (state, action) => {
     state.loading = false
     state.otpMessage = action.payload
-    state.error = null
+    state.otpResendError = null
   },
   OTP_RESEND_FAILURE: (state, action) => {
     state.loading = false
     state.otpMessage = null
-    state.error = action.payload
+    state.otpResendError = action.payload
   },
 
 });

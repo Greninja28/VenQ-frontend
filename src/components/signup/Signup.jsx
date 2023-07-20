@@ -19,8 +19,7 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const { userDetails, error, userToken } = useSelector((state) => state.auth);
-
+  const { userDetails, signupError, userToken } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,20 +39,21 @@ const Signup = () => {
   }
 
   useEffect(() => {
-    if (error) {
+    if (signupError) {
       toast.error('User already exists in the database');
       setName('');
       setEmail('');
       setPassword('');
-      navigate('/signup');
-      toast.dismiss(); // Clear all toasts when component unmounts
     } else if (userDetails) {
+      toast.success('Verification code sent to the email!')
       localStorage.setItem('details', userToken);
-      navigate('verify');
-      setStep(2);
-      toast.dismiss(); // Clear all toasts when component unmounts
+      setTimeout(() => {
+        navigate('/signup/verify');
+      }, 3000)
+      setStep(2)
     }
-  }, [error, userDetails, navigate, userToken]);
+  }, [signupError, userDetails, navigate, userToken]);
+
 
   return (
     <div>

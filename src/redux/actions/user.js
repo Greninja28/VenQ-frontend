@@ -32,32 +32,26 @@ export const signup = (name, email, password) => async (dispatch) => {
 
 export const verifyEmail = (email, otp) => async (dispatch) => {
   try {
-    dispatch({
-      type: "VERIFY_REQUEST"
-    })
+    dispatch({ type: "VERIFY_REQUEST" });
 
-    const { data } = await axios.post(`${URL}/auth/user/verify`, {
-      email, otp
-    }, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
+    const { data } = await axios.post(`${URL}/auth/user/verify`, { email, otp }, {
+      headers: { "Content-Type": "application/json" },
+    });
 
-    dispatch({
-      type: "VERIFY_SUCCESS",
-      payload: {
-        message: data.message,
-        details: data.details
-      }
-
-    })
-
+    if (data) {
+      dispatch({
+        type: "VERIFY_SUCCESS",
+        payload: {
+          message: data.message,
+          details: data.details,
+        },
+      });
+    }
   } catch (error) {
     dispatch({
-      type: 'VERIFY_FAILURE',
-      payload: error.response.data
-    })
+      type: "VERIFY_FAILURE",
+      payload: error.response.data.message,
+    });
   }
 }
 
@@ -87,7 +81,7 @@ export const login = (email, password) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: 'LOGIN_FAILURE',
-      payload: error.response.data
+      payload: error.response.data.message
     })
   }
 }
@@ -118,7 +112,7 @@ export const logout = (token) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: 'LOGOUT_FAILURE',
-      payload: error.response.data
+      payload: error.response.data.message
     })
   }
 }
@@ -147,7 +141,7 @@ export const resendOTP = (email) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: 'OTP_RESEND_FAILURE',
-      payload: error.response.data
+      payload: error.response.data.message
     })
   }
 }

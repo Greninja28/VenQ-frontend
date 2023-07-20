@@ -31,13 +31,13 @@ const ResendButton = styled('button')`
 
 
 const Verification = ({ step, setStep }) => {
-  const [otp, setOtp] = useState('')
+  const [otp, setOtp] = useState('');
   const [minutes, setMinutes] = useState(3);
   const [seconds, setSeconds] = useState(0);
   const [resendButtonDisabled, setResendButtonDisabled] = useState(true);
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { message, error } = useSelector(state => state.auth)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { message, verifyError } = useSelector((state) => state.auth);
   const token = localStorage.getItem('details');
   const decodedToken = jwtDecode(token);
   const email = decodedToken.UserInfo.email;
@@ -45,7 +45,7 @@ const Verification = ({ step, setStep }) => {
   const countdown = () => {
     if (seconds === 0) {
       if (minutes === 0) {
-        setResendButtonDisabled(false); // Enable resend button
+        setResendButtonDisabled(false); // Enable the "Resend OTP" button
       } else {
         setMinutes(minutes - 1);
         setSeconds(59);
@@ -65,11 +65,6 @@ const Verification = ({ step, setStep }) => {
     } else {
       if (token) {
         dispatch(verifyEmail(email, otp));
-        setTimeout(() => {
-          navigate('/dashboard/properties');
-        }, 3000)
-      } else {
-        toast.error('Failed to access the email address');
       }
     }
   }
@@ -84,76 +79,83 @@ const Verification = ({ step, setStep }) => {
     setSeconds(0);
     setResendButtonDisabled(true);
   }
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      setOtp('');
-      toast.dismiss(); // Cleanup function
-    } else if (message) {
-      navigate('/dashboard/properties');
-      setOtp('')
-      toast.dismiss(); // Cleanup function
-    }
-  }, [error, message, navigate]);
 
+  useEffect(() => {
+    if (verifyError) {
+      toast.error(verifyError);
+      setOtp('');
+    } else if (message) {
+      toast.success(message);
+      setTimeout(() => {
+        navigate('/dashboard/properties');
+      }, 3000);
+      setOtp('');
+    }
+  }, [verifyError, message, navigate])
 
   useEffect(() => {
     const interval = setInterval(countdown, 1000);
     return () => clearInterval(interval);
-  });
-
-
+  })
 
 
   return (
     <div>
       <div className="verification-container">
-
         <div className="otp-container">
-
           <div className="items-container">
-
-            <Typography variant='h4'>VERIFY EMAIL ADDRESS</Typography>
-            <Typography>Please Enter the one-time-password(OTP) sent to {email}</Typography>
+            <Typography variant="h4">VERIFY EMAIL ADDRESS</Typography>
+            <Typography>
+              Please Enter the one-time-password(OTP) sent to {email}
+            </Typography>
             <Typography>{formattedTime()}</Typography>
 
             <form onSubmit={handleCode}>
-
               <div className="formItems">
-                <input type="text" placeholder='Enter the code' autoComplete='off' name='code' value={otp} onChange={(e) => setOtp(e.target.value)} />
+                <input
+                  type="text"
+                  placeholder="Enter the code"
+                  autoComplete="off"
+                  name="code"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
               </div>
 
-              <button type='submit' className='verify-button'>Verify</button>
+              <button type="submit" className="verify-button">
+                Verify
+              </button>
             </form>
 
-            <ResendButton isVisible={!resendButtonDisabled} onClick={handleResendOTP} disabled={resendButtonDisabled}>
+            <ResendButton
+              isVisible={!resendButtonDisabled}
+              onClick={handleResendOTP}
+              disabled={resendButtonDisabled}
+            >
               Resend OTP
             </ResendButton>
 
-
-
-            <div className='progressBar'>
+            <div className="progressBar">
               <progress value={step} max={2} />
-              <Typography variant='h6'>Step <p>{step}</p> of <p>2</p></Typography>
+              <Typography variant="h6">
+                Step <p>{step}</p> of <p>2</p>
+              </Typography>
             </div>
-
           </div>
         </div>
 
         <div className="verify-image">
           <img src="/images/VENQ_BOLD_Big.png" alt="logo" />
           <div className="text">
-            <Typography variant='h2'>Say hello</Typography>
-            <Typography variant='h2'>to passive income</Typography>
+            <Typography variant="h2">Say hello</Typography>
+            <Typography variant="h2">to passive income</Typography>
           </div>
         </div>
 
         <ToastContainer />
-
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Verification
+export default Verification;
